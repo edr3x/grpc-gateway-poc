@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+option go_package = "github.com/edr3x/gateway-impl/pkg/proto";
+
+package auth_service;
+
+import "google/api/annotations.proto";
+
+service AuthService {
+  rpc Login(LoginRequest) returns (LoginResponse){
+      option (google.api.http) = {
+          post: "/v1/auth/login"
+          body: "*"
+      };
+  };
+
+  rpc Register(RegisterRequest) returns (RegisterResponse){
+      option (google.api.http) = {
+          post: "/v1/auth/register"
+          body: "*"
+      };
+  };
+
+  rpc Profile(NoRequest) returns (User){
+      option (google.api.http) = {
+          get: "/v1/user/profile"
+    };
+  };
+}
+
+message NoRequest {}
+
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message LoginResponse {
+  string accessToken = 1;
+  string refreshToken = 2;
+}
+
+message RegisterRequest {
+  string email = 1;
+  string fullName = 2;
+  int32 age = 3;
+  string password = 4;
+}
+
+message RegisterResponse {
+  string message = 1;
+}
+
+message User {
+    string id = 1;
+    string email = 2;
+    string fullName = 3;
+    int32 age = 4;
+}
